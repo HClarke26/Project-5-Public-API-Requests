@@ -3,14 +3,14 @@
  */
 
 let users = []; 
-const url = `https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob&noinfo &nat=US`;
+const url = `https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob&noinfo &nat=US`; 
 const gallery = document.getElementById('gallery');
 
 // ------------------------------------------
 //  FETCH FUNCTION
 // ------------------------------------------
 
-fetch(url)
+fetch(url) // Fetch request for random user API
   .then(res => res.json())
   .then(res => displayUsers(res.results))
   .catch(err => console.log(err));
@@ -24,12 +24,13 @@ function displayUsers(userData) {
     users = userData;
     let userHTML = '';
 
-    userData.forEach((user, index) => {
+    userData.forEach((user, index) => { // Looping through all data
       const name = user.name;
       const email = user.email;
       const city = user.location.city;
       const picture = user.picture;
 
+      // Temperate literal
       userHTML += `
         <div class="card" data-index=${index}>
           <div class="card-img-container">
@@ -44,7 +45,7 @@ function displayUsers(userData) {
       `;
     });
 
-    gallery.insertAdjacentHTML('beforeend', userHTML); 
+    gallery.insertAdjacentHTML('beforeend', userHTML); // Inserting new HTML
   };
 
 
@@ -52,11 +53,12 @@ function displayUsers(userData) {
 //  CREATE EMPLOYEE MODAL
 // ------------------------------------------
 
-function generateModal(index){
-    const {name, dob, phone, email, location :{city, street, state, postcode}, picture} = users[index];
+function generateModal(index) {
+    const {name, dob, phone, email, location :{city, street, state, postcode}, picture} = users[index]; // Object destructuring
     const newFormatPhone = phone.replace(/-/,' ');  
     let date = new Date(dob.date);
 
+    // Temperate literal
     const modalHTML = `
     <div class="modal-container">
         <div class="modal">
@@ -74,7 +76,8 @@ function generateModal(index){
     </div>
     `;
 
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.insertAdjacentHTML('beforeend', modalHTML); // Inserting new HTML
+    
     const modalClose = document.getElementById('modal-close-btn'); 
 
 
@@ -82,12 +85,12 @@ function generateModal(index){
 //  EVENT LISTENER
 // ------------------------------------------
 
-modalClose.addEventListener('click', e =>{
+modalClose.addEventListener('click', e =>{ // When the close button is clicked the modal will be removed
   document.body.removeChild(document.body.lastElementChild);
 });
 };
 
-gallery.addEventListener('click', (e) => { 
+gallery.addEventListener('click', (e) => { // When the employee card is clicked a modal with their information will be generated
     const card = e.target.closest('.card');
     const index = card.getAttribute('data-index');
     currentModalIndex = index;
